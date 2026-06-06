@@ -206,3 +206,87 @@ export async function verifyToken(): Promise<{ student: IStudent }> {
     headers: { ...getAuthHeaders() },
   });
 }
+
+// ─── Saathi Chatbot Stream API ───────────────────────────────────
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatCallbacks {
+  onToken: (content: string) => void;
+  onComplete: () => void;
+  onError: (error: Error) => void;
+}
+
+export function startChatStream(
+  studentId: string,
+  message: string,
+  history: ChatMessage[],
+  callbacks: ChatCallbacks
+): AbortController {
+  const controller = new AbortController();
+
+  fetch(`${API_URL}/api/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders(),
+    },
+    body: JSON.stringify({ studentId, message, history }),
+    signal: controller.signal,
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Chat connection failed: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('No response body');
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        let currentEvent = '';
+        for (const line of lines) {
+          if (line.startsWith('event: ')) {
+            currentEvent = line.slice(7).trim();
+          } else if (line.startsWith('data: ') && currentEvent) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              switch (currentEvent) {
+                case 'token':
+                  callbacks.onToken(data.content);
+                  break;
+                case 'complete':
+                  callbacks.onComplete();
+                  break;
+                case 'error':
+                  callbacks.onError(new Error(data.message));
+                  break;
+              }
+            } catch {
+              // Ignore malformed JSON
+            }
+            currentEvent = '';
+          }
+        }
+      }
+    })
+    .catch((err) => {
+      if (err.name !== 'AbortError') {
+        callbacks.onError(err);
+      }
+    });
+
+  return controller;
+}
+

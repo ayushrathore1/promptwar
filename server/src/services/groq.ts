@@ -225,3 +225,75 @@ Rules:
 
   return response.choices[0]?.message?.content || 'Take 5 slow breaths, counting to 4 on each inhale and 6 on each exhale.';
 }
+
+// ─── Saathi Chatbot System Prompt ────────────────────────────────
+export function buildChatSystemPrompt(params: {
+  examName: string;
+  daysRemaining: number;
+  background: string;
+  recentMoods?: IMoodEntry[];
+}): string {
+  const { examName, daysRemaining, background, recentMoods } = params;
+
+  let moodContext = '';
+  if (recentMoods && recentMoods.length > 0) {
+    const lastThree = recentMoods
+      .slice(0, 3)
+      .map((m) => `${MOOD_EMOJIS[m.moodScore]} ${m.moodLabel} (trigger: ${m.trigger})`)
+      .join(', ');
+    moodContext = `\nTheir most recent check-ins: ${lastThree}.`;
+  }
+
+  return `You are Saathi (meaning "companion" in Hindi), a compassionate and warm academic wellness companion for Indian students. You are here to provide emotional support, guidance, and a safe space to vent about exam stress.
+
+The student is preparing for ${examName} (${daysRemaining} days away).
+Their student background: "${background}".${moodContext}
+
+RULES:
+1. Speak in a warm, empathetic, elder-sibling-like tone. Use gentle, comforting "you" language. Keep it conversational.
+2. Acknowledge and validate their feelings first. Never use toxic positivity or dismissive advice (e.g. "don't worry", "just focus").
+3. Keep responses relatively concise and punchy (typically 2-4 sentences) so it feels like a real chat. If they ask for a specific exercise or relaxation technique, you can provide it in clear steps.
+4. Encourage sleep, physical movement, deep breaths, and proper meals. Never suggest studying harder or cutting back on rest.
+5. CRISIS PROTOCOL: If the student shows signs of crisis, severe depression, or self-harm thoughts, you MUST immediately steer the conversation to safety by saying:
+   "I hear how incredibly heavy things feel right now, but please know you don't have to carry this alone. If you're feeling hopeless or having thoughts of self-harm, please reach out to someone who can help immediately. You can contact AASRA at +91-9820466726 or Vandrevala Foundation at +91-9999666555. They are free, confidential, and available 24/7. Please take care of yourself."
+6. Respond in a natural, fluid dialogue format without any assistant prefix.`;
+}
+
+// ─── Streaming Chat ──────────────────────────────────────────────
+export async function* streamChat(params: {
+  examName: string;
+  daysRemaining: number;
+  background: string;
+  currentMessage: string;
+  history: { role: 'user' | 'assistant'; content: string }[];
+  recentMoods?: IMoodEntry[];
+}): AsyncGenerator<string> {
+  const systemPrompt = buildChatSystemPrompt({
+    examName: params.examName,
+    daysRemaining: params.daysRemaining,
+    background: params.background,
+    recentMoods: params.recentMoods,
+  });
+
+  const messages = [
+    { role: 'system', content: systemPrompt },
+    ...params.history.map((h) => ({ role: h.role, content: h.content })),
+    { role: 'user', content: params.currentMessage },
+  ];
+
+  const stream = await groq.chat.completions.create({
+    messages: messages as any,
+    model: MODEL,
+    stream: true,
+    temperature: 0.7,
+    max_tokens: 500,
+  });
+
+  for await (const chunk of stream) {
+    const content = chunk.choices[0]?.delta?.content;
+    if (content) {
+      yield content;
+    }
+  }
+}
+

@@ -40,9 +40,10 @@ const BottomNav: React.FC<BottomNavProps> = ({ currentPage, onNavigate }) => {
                   aria-label={`Navigate to ${item.label}`}
                   onClick={() => onNavigate(item.id)}
                   className={`
-                    flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 cursor-pointer min-w-[52px]
-                      ? 'text-brand-primary'
-                      : 'text-brand-text-secondary hover:text-brand-text'
+                    flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 cursor-pointer min-w-[52px] ${
+                      isActive
+                        ? 'text-brand-primary'
+                        : 'text-brand-text-secondary hover:text-brand-text'
                     }
                   `}
                 >

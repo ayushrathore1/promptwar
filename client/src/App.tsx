@@ -11,6 +11,7 @@ import MoodLogger from './pages/MoodLogger';
 import MindScan from './pages/MindScan';
 import History from './pages/History';
 import Toolkit from './pages/Toolkit';
+import { ChatWidget } from './components/ChatWidget';
 import './App.css';
 
 // ─── Page Loading Fallback ───────────────────────────────────────
@@ -403,6 +404,9 @@ export default function App() {
 
       {/* ─── Bottom Navigation (Mobile) ─── */}
       <BottomNav currentPage={currentPage} onNavigate={handleNavigate} />
+
+      {/* Floating Chat Companion */}
+      <ChatWidget studentId={activeStudentId} />
     </div>
   );
 }

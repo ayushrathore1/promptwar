@@ -9,6 +9,7 @@ import moodRoutes from './routes/mood';
 import studentRoutes from './routes/student';
 import toolkitRoutes from './routes/toolkit';
 import authRoutes from './routes/auth';
+import chatRoutes from './routes/chat';
 
 dotenv.config();
 
@@ -49,9 +50,19 @@ const authLimiter = rateLimit({
   message: { error: 'Too many authentication attempts. Please try again later.' },
 });
 
+// Supportive chat rate limiter (40 per 15 min)
+const chatLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'You are chatting fast! Take a deep breath and try again in a moment.' },
+});
+
 app.use('/api', apiLimiter);
 app.use('/api/scan', scanLimiter);
 app.use('/api/auth', authLimiter);
+app.use('/api/chat', chatLimiter);
 
 // ─── CORS ─────────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -84,6 +95,7 @@ app.use('/api/scan', scanRoutes);
 app.use('/api/moods', moodRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/toolkit', toolkitRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
