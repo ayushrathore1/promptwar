@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import BottomNav from './components/BottomNav';
 import { mockStudents } from './data/mockStudents';
 import { mockMoodHistory } from './data/mockMoodHistory';
 import { type IStudent, type IMoodEntry, type MoodScore, type MoodLabel, type TriggerType } from './types';
 import { fetchStudents, fetchMoodHistory, logMood, verifyToken, getStoredToken, clearToken, quickLogin, storeToken } from './lib/api';
 import { LogOut } from 'lucide-react';
+import LoginPage from './pages/LoginPage';
+import Dashboard from './pages/Dashboard';
+import MoodLogger from './pages/MoodLogger';
+import MindScan from './pages/MindScan';
+import History from './pages/History';
+import Toolkit from './pages/Toolkit';
 import './App.css';
-
-// ─── Lazy-loaded pages (Efficiency — code splitting) ─────────────
-const LoginPage = lazy(() => import('./pages/LoginPage'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const MoodLogger = lazy(() => import('./pages/MoodLogger'));
-const MindScan = lazy(() => import('./pages/MindScan'));
-const History = lazy(() => import('./pages/History'));
-const Toolkit = lazy(() => import('./pages/Toolkit'));
 
 // ─── Page Loading Fallback ───────────────────────────────────────
 function PageLoader() {
