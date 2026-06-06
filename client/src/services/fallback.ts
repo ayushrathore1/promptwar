@@ -76,10 +76,10 @@ export function getFallbackFocus(trigger: TriggerType): string {
 export function getFallbackPatternScoutReport(
   student: IStudent,
   moodHistory: IMoodEntry[],
-  currentMood: MoodScore,
+  _currentMood: MoodScore,
   currentLabel: MoodLabel,
   trigger: TriggerType,
-  note?: string
+  _note?: string
 ): string {
   const examDate = new Date(student.examDate);
   const now = new Date();

@@ -10,7 +10,6 @@ interface MindScanPanelProps {
   examName?: string;
   title?: string;
   icon?: React.ReactNode;
-  isComplete?: boolean;
   status?: 'pending' | 'running' | 'complete' | 'error';
   accentClass?: string;
   bgGlowClass?: string;
@@ -24,7 +23,6 @@ export const MindScanPanel: React.FC<MindScanPanelProps> = ({
   examName,
   title,
   icon,
-  isComplete = false,
   status,
   accentClass = '',
   bgGlowClass = '',

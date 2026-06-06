@@ -20,7 +20,6 @@ export const MoodLogger: React.FC<MoodLoggerProps> = ({
   const [selectedScore, setSelectedScore] = useState<MoodScore | null>(null);
   const [selectedTrigger, setSelectedTrigger] = useState<TriggerType | null>(null);
   const [note, setNote] = useState('');
-  const [isSaved, setIsSaved] = useState(false);
 
   const handleMoodChange = (score: MoodScore) => {
     setSelectedScore(score);
@@ -43,7 +42,6 @@ export const MoodLogger: React.FC<MoodLoggerProps> = ({
 
     const label = MOOD_LABELS[selectedScore - 1];
     onAddEntry(selectedScore, label, selectedTrigger, note);
-    setIsSaved(true);
 
     // Fire Confetti explosion to celebrate completing the check-in!
     confetti({

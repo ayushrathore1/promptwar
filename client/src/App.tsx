@@ -241,19 +241,6 @@ export default function App() {
     []
   );
 
-  const handleQuickScan = useCallback(
-    (score: number, trigger: TriggerType) => {
-      const labels: MoodLabel[] = ['Overwhelmed', 'Anxious', 'Okay', 'Good', 'Calm'];
-      setScanDraft({
-        moodScore: score as MoodScore,
-        moodLabel: labels[(score as number) - 1],
-        trigger,
-      });
-      setCurrentPage('mind-scan');
-    },
-    []
-  );
-
   // ─── Render ────────────────────────────────────────────────────
   // Auth check splash
   if (!authChecked) {
@@ -382,7 +369,6 @@ export default function App() {
                 moodEntries={moodEntries}
                 onSwitchProfile={handleSwitchProfile}
                 onNavigate={handleNavigate}
-                onQuickScan={handleQuickScan}
               />
             )}
 

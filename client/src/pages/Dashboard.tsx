@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type IStudent, type IMoodEntry, type MoodScore, MOOD_EMOJIS } from '../types';
+import { type IStudent, type IMoodEntry, MOOD_EMOJIS } from '../types';
 import { BurnoutRiskMeter } from '../components/BurnoutRiskMeter';
 import { MoodTimeline } from '../components/MoodTimeline';
 import { UserSquare2, RefreshCw, ChevronRight, CheckCircle2, Heart, Calendar, Flame } from 'lucide-react';
@@ -12,7 +12,6 @@ interface DashboardProps {
   moodEntries: IMoodEntry[];
   onSwitchProfile: (studentId: string) => void;
   onNavigate: (page: string) => void;
-  onQuickScan: (moodScore: number, trigger: string) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -21,7 +20,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
   moodEntries,
   onSwitchProfile,
   onNavigate,
-  onQuickScan,
 }) => {
   const [showProfileSwitcher, setShowProfileSwitcher] = useState(false);
 
