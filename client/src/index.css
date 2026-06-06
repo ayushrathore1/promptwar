@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
+
+  /* ─── Serene Light Mode Palette (Matching Reference) ─── */
+  --color-brand-primary: #4A7AE5;
+  --color-brand-primary-light: #7BA3F5;
+  --color-brand-teal: #1DB8A4;
+  --color-brand-amber: #E8A838;
+  --color-brand-coral: #E05A4F;
+  --color-brand-pink: #E8B4CB;
+  --color-brand-gold: #D4A853;
+  --color-brand-bg: #F5F7FA;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-border: #E8EBF0;
+  --color-brand-surface-elevated: #FFFFFF;
+  --color-brand-text: #1A1A2E;
+  --color-brand-text-secondary: #6B7280;
+  --color-brand-dark: #1A1A2E;
+
+  --animate-cursor-blink: cursor-blink 0.8s infinite;
+  --animate-pulse-glow: pulse-glow 2s infinite ease-in-out;
+  --animate-shimmer: shimmer 1.5s infinite linear;
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.6s ease-out;
+  --animate-scale-in: scale-in 0.3s ease-out;
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(74, 122, 229, 0.15); }
+    50% { box-shadow: 0 0 20px rgba(74, 122, 229, 0.3); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-brand-text);
+    letter-spacing: -0.01em;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+
+  /* Skip to content — Accessibility */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 9999;
+    padding: 8px 16px;
+    background: var(--color-brand-dark);
+    color: white;
+    border-radius: 0 0 8px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: top 0.2s;
+  }
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+/* Card with soft shadow */
+.glass-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(232, 235, 240, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+/* Shimmer for loading skeletons */
+.shimmer-bg {
+  background: linear-gradient(90deg, #f0f2f5 25%, #e8ebf0 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+}
+
+/* Ambient glow — subtle radial light behind content */
+.ambient-glow {
+  position: relative;
+}
+.ambient-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(74, 122, 229, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}

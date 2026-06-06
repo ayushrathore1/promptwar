@@ -1,0 +1,64 @@
+/* ─── MindSpace App Styles ───────────────────────────────────── */
+
+/* Page transition animation */
+.page-enter {
+  animation: fade-in 0.4s ease-out;
+}
+
+/* Mood emoji hover effect */
+.mood-emoji-btn {
+  transition: all 0.2s ease;
+}
+.mood-emoji-btn:hover {
+  transform: scale(1.15);
+}
+.mood-emoji-btn:active {
+  transform: scale(0.95);
+}
+.mood-emoji-btn.selected {
+  transform: scale(1.1);
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(124, 92, 252, 0.1);
+}
+
+/* Breathing animation for the interactive breath timer */
+@keyframes breathe-in {
+  from { transform: scale(0.6); opacity: 0.3; }
+  to { transform: scale(1.2); opacity: 0.8; }
+}
+@keyframes breathe-out {
+  from { transform: scale(1.2); opacity: 0.8; }
+  to { transform: scale(0.6); opacity: 0.3; }
+}
+
+/* Streaming text cursor */
+.streaming-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--color-brand-primary);
+  animation: cursor-blink 0.8s infinite;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+}
+
+/* Confetti button pop */
+.confetti-pop {
+  animation: scale-in 0.3s ease-out;
+}
+
+/* Reduced motion preference — Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
