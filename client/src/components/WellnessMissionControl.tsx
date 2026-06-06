@@ -368,7 +368,6 @@ export const WellnessMissionControl: React.FC<WellnessMissionControlProps> = ({
               icon={<Brain className="w-4 h-4 text-brand-primary" />}
               text={patternScoutText}
               isStreaming={agentStatuses.patternScout === 'running'}
-              isComplete={agentStatuses.patternScout === 'complete'}
               status={agentStatuses.patternScout}
               accentClass="border-brand-primary"
               bgGlowClass="shadow-[0_0_15px_rgba(66,133,244,0.08)]"
@@ -500,7 +499,6 @@ export const WellnessMissionControl: React.FC<WellnessMissionControlProps> = ({
                 icon={<Sparkles className="w-4 h-4 text-brand-teal" />}
                 text={microCoachText}
                 isStreaming={agentStatuses.microCoach === 'running'}
-                isComplete={agentStatuses.microCoach === 'complete'}
                 status={agentStatuses.microCoach}
                 accentClass="border-brand-teal"
                 bgGlowClass="shadow-[0_0_15px_rgba(29,184,164,0.08)]"
